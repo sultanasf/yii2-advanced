@@ -16,7 +16,11 @@ class m230831_070455_create_table_item_and_fk extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'price' => $this->integer(),
-            'category_id' => $this->integer()
+            'category_id' => $this->integer(),
+            'created_at' => $this->integer(),
+            'updated_at' => $this->integer(),
+            'created_by' => $this->integer(),
+            'updated_by' => $this->integer(),
         ]);
 
         $this->addForeignKey(

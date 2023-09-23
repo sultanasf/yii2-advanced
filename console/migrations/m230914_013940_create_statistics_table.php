@@ -12,8 +12,13 @@ class m230914_013940_create_statistics_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%statistics}}', [
+        $this->createTable('statistics', [
             'id' => $this->primaryKey(),
+            'access_time' => $this->dateTime(),
+            'user_ip' => $this->string(20),
+            'user_host' => $this->string(50),
+            'path_info' => $this->string(50),
+            'query_string' => $this->string(50),
         ]);
     }
 
@@ -22,6 +27,6 @@ class m230914_013940_create_statistics_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%statistics}}');
+        $this->dropTable('statistics');
     }
 }

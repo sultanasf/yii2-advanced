@@ -4,6 +4,9 @@ namespace frontend\controllers;
 
 use app\models\Item;
 use app\models\ItemSearch;
+use app\models\Statistics;
+use frontend\components\MyComponent;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -16,6 +19,22 @@ class ItemController extends Controller
     /**
      * @inheritDoc
      */
+    // public function beforeAction($action)
+    // {
+    //     if (in_array($action->id, ["index", "view"])) {
+    //         $stats = new Statistics();
+    //         $stats->access_time = date('Y-m-d H:i:s');
+    //         $stats->user_ip = Yii::$app->request->userIP;
+    //         $stats->user_host = Yii::$app->request->userHost;
+    //         $stats->path_info = Yii::$app->request->pathInfo;
+    //         $stats->query_string = Yii::$app->request->queryString;
+
+    //         $stats->save();
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
     public function behaviors()
     {
         return array_merge(
@@ -38,6 +57,7 @@ class ItemController extends Controller
      */
     public function actionIndex()
     {
+        Yii::$app->myComponent->trigger(MyComponent::STATISTIC_EVENT);
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -55,6 +75,8 @@ class ItemController extends Controller
      */
     public function actionView($id)
     {
+        Yii::$app->myComponent->trigger(MyComponent::STATISTIC_EVENT);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -65,22 +87,22 @@ class ItemController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    // public function actionCreate()
-    // {
-    //     $model = new Item();
+    public function actionCreate()
+    {
+        $model = new Item();
 
-    //     if ($this->request->isPost) {
-    //         if ($model->load($this->request->post()) && $model->save()) {
-    //             return $this->redirect(['view', 'id' => $model->id]);
-    //         }
-    //     } else {
-    //         $model->loadDefaultValues();
-    //     }
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
 
-    //     return $this->render('create', [
-    //         'model' => $model,
-    //     ]);
-    // }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Updates an existing Item model.

@@ -12,6 +12,10 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'myComponent' => [
+            'class' => \frontend\components\MyComponent::class,
+            'on statistic-event' => [\frontend\components\MyComponent::class, 'statisticEventHandler'],
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
